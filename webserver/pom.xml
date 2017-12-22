@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>isec.mis.mds</groupId>
+  <artifactId>webserver</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>webserver Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <jetty.version>8.1.0.RC0</jetty.version>
+    <glassfish.javax.version>2.2.3</glassfish.javax.version>
+    <glassfish.javax-impl.version>2.2</glassfish.javax-impl.version>
+    <glassfish.jstl.version>1.2</glassfish.jstl.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.faces</groupId>
+      <artifactId>jsf-api</artifactId>
+      <version>2.1.7</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.faces</groupId>
+      <artifactId>jsf-impl</artifactId>
+      <version>2.1.7</version>
+    </dependency>
+
+    <!-- Jetty Webapp-->
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-webapp</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <!--shouldn't be needed-->
+    <!-- JSP Support -->
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>javax.servlet.jsp</artifactId>
+      <version>${glassfish.javax.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>jsp-impl</artifactId>
+      <version>${glassfish.javax-impl.version}</version>
+    </dependency>
+
+    <!-- EL Support -->
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>javax.el</artifactId>
+      <version>${glassfish.javax.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>el-impl</artifactId>
+      <version>${glassfish.javax-impl.version}</version>
+    </dependency>
+
+    <!-- JSTL Support -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>${glassfish.jstl.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>jstl-impl</artifactId>
+      <version>${glassfish.jstl.version}</version>
+    </dependency>
+
+  </dependencies>
+  <build>
+    <finalName>webserver</finalName>
+  </build>
+</project>
