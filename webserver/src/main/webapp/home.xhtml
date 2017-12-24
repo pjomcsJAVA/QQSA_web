@@ -1,12 +1,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns = "http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
    <head>
       <title>JSF Tutorial!</title>
    </head>
 
    <body>
-      #{helloWorld.getMessage()}
+       <h4>#{helloWorld.getMessage()}</h4>
+
+      <h3>Table</h3>
+       <h:dataTable value="#{quiz.getScoreTable()}" var="o"
+                    styleClass="order-table"
+                    headerClass="order-table-header"
+                    rowClasses="order-table-odd-row,order-table-even-row"
+       >
+          <h:column>
+             <f:facet name="header">Player</f:facet>
+             #{o.name}
+          </h:column>
+
+          <h:column>
+             <f:facet name="header">Score</f:facet>
+             #{o.score}
+          </h:column>
+
+       </h:dataTable>
    </body>
 </html>

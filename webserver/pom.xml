@@ -25,6 +25,12 @@
          <artifactId>jsf-impl</artifactId>
          <version>2.1.7</version>
       </dependency>
+
+      <dependency>
+          <groupId>net.thegreshams</groupId>
+          <artifactId>firebase4j</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+      </dependency>
   </dependencies>
   <build>
     <finalName>webserver</finalName>
@@ -35,8 +41,8 @@
             <version>2.3.1</version>
         
             <configuration>
-               <source>1.6</source>
-               <target>1.6</target>
+               <source>1.7</source>
+               <target>1.7</target>
             </configuration>
          </plugin>
       </plugins>
