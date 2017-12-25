@@ -10,10 +10,16 @@
    </head>
 
    <body>
-       <h4>#{helloWorld.getMessage()}</h4>
+       <h:form>
+           <h3><h:outputText id = "outputMessage" value = "Step: #{quiz.step}"/></h3>
+           <h:commandButton value="Next Step" action="#{quiz.nextStep}">
+               <f:ajax execute = "inputName" render = "outputMessage" />
+           </h:commandButton>
+       </h:form>
 
-      <h3>Table</h3>
-       <h:dataTable value="#{quiz.getScoreTable()}" var="o"
+       <h3>Table</h3>
+
+       <h:dataTable value="#{quiz.scoreTable}" var="o"
                     styleClass="order-table"
                     headerClass="order-table-header"
                     rowClasses="order-table-odd-row,order-table-even-row"

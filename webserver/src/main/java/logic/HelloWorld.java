@@ -1,15 +1,20 @@
 package logic;
 
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
-@ManagedBean(name = "helloWorld", eager = true)
+@ManagedBean(name = "helloWorld")
+@ApplicationScoped
 public class HelloWorld {
+
+   private int counter = 0;
    
    public HelloWorld() {
-      System.out.println("HelloWorld started!");
+
    }
 	
    public String getMessage() {
-      return "Hello World 2!";
+        return "Hello World "+counter+++"!";
    }
 }
