@@ -23,21 +23,38 @@
                     <h4>Question&aacute;rio - Extreme Programming</h4>
                 </div>
                 <div class="card-body">
-                    
                     <div class="row">
-                        <div class="col-12 col-lg-4">
-                          <h:form>
+                        <div class="col-12 col-lg-2">
+                            <h:form>
                               <h5><h:outputText id = "outputMessage" value = "Step: #{quiz.step}"/></h5>
                               <h:commandButton value="Next Step" action="#{quiz.nextStep}">
                                   <f:ajax execute = "inputName" render = "outputMessage" />
                               </h:commandButton>
-                          </h:form>
+                            </h:form>
                             <div class="margin-top-40">
                                 <h5><i class="fa fa-clock-o"></i> Clock</h5>
                                 <p>
                                 <img src="https://i.pinimg.com/originals/de/50/2a/de502ade8fc8fa2e69a5cceb39198bdf.jpg" style="height:50px;"></img>
                                 <span id="timeLeft">10s</span></p>
                             </div>
+                        </div>               
+                        <div class="col-12 col-lg-6">  
+                           <h5>Question #{quiz.step != 0 ? quiz.step : ''}</h5>
+                            <h:dataTable value="#{quiz.question}" var="q"
+                                           styleClass="table order-table table-bordered table-condensed questions-show"
+                                           headerClass="thead-light order-table-header"
+                                           rowClasses="order-table-odd-row,order-table-even-row"
+                              >
+                                  <h:column>
+                                      <f:facet name="header">#</f:facet>
+                                      #{q.index != 0 ? q.index : ''}
+                                  </h:column>
+
+                                  <h:column>
+                                      <f:facet name="header">question</f:facet>
+                                      #{ q.value }
+                                  </h:column>
+                              </h:dataTable>
                         </div>
                         <div class="col-12 col-lg-4"> 
                             <h5 class="text-bold">&#x1f3c6; Top 5</h5>
@@ -56,24 +73,6 @@
                                   #{o.score}
                                </h:column>
                             </h:dataTable>
-                        </div>
-                        <div class="col-12 col-lg-4">  
-                           <h5>Question #{quiz.step != 0 ? quiz.step : ''}</h5>
-                            <h:dataTable value="#{quiz.question}" var="q"
-                                           styleClass="table order-table table-bordered table-condensed questions-show"
-                                           headerClass="thead-light order-table-header"
-                                           rowClasses="order-table-odd-row,order-table-even-row"
-                              >
-                                  <h:column>
-                                      <f:facet name="header">#</f:facet>
-                                      #{q.index != 0 ? q.index : ''}
-                                  </h:column>
-
-                                  <h:column>
-                                      <f:facet name="header">question</f:facet>
-                                      #{ q.value }
-                                  </h:column>
-                              </h:dataTable>
                         </div>
                     </div>    
                 </div>
