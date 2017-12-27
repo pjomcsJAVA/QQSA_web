@@ -14,7 +14,7 @@ import java.util.*;
 public class QuizBean {
 
     private static String SPLIT_REGEX = "[-]";
-    private static String FIRE_BASE_URL = "https://mds-q-b2d34.firebaseio.com/"; //https://mds-q-b2d34.firebaseio.com/
+    private static String FIRE_BASE_URL = "https://test-1ae31.firebaseio.com/"; //https://mds-q-b2d34.firebaseio.com/
     private static long STEP_TIME_SECS = 10;
 
     private List<Player> players;
