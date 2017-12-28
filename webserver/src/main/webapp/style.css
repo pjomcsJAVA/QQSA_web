@@ -1,0 +1,13 @@
+.margin-top-40{
+    margin-top: 40px;
+}
+
+#timeLeft{
+    font-size:24px;
+    margin-top: 4px;
+}
+
+.questions-show  tbody tr:first-child td{
+    font-weight: bold;
+    background-color: #f3f3f3;
+}

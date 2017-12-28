@@ -6,53 +6,77 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
    <head>
-      <title>JSF Tutorial!</title>
+      <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"></link>
+      <title>Question&aacute;rio - Extreme Programming </title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous"></link>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+      <script src="/webserver/app.js"></script>
+      <link rel="stylesheet" href="/webserver/style.css" ></link>
    </head>
-
    <body>
-       <h:form>
-           <h3><h:outputText id = "outputMessage" value = "Step: #{quiz.step}"/></h3>
-           <h:commandButton value="Next Step" action="#{quiz.nextStep}">
-               <f:ajax execute = "inputName" render = "outputMessage" />
-           </h:commandButton>
-       </h:form>
+       <div class="container container-fluid">  
+           <div class="card margin-top-40">
+                <div class="card-header">
+                    <h4>Question&aacute;rio - Extreme Programming</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-lg-2">
+                            <h:form>
+                              <h5><h:outputText id = "outputMessage" value = "Step: #{quiz.step}"/></h5>
+                              <h:commandButton value="Next Step" action="#{quiz.nextStep}">
+                                  <f:ajax execute = "inputName" render = "outputMessage" />
+                              </h:commandButton>
+                            </h:form>
+                            <div class="margin-top-40">
+                                <h5><i class="fa fa-clock-o"></i> Clock</h5>
+                                <p>
+                                <img src="https://i.pinimg.com/originals/de/50/2a/de502ade8fc8fa2e69a5cceb39198bdf.jpg" style="height:50px;"></img>
+                                <span id="timeLeft">10s</span></p>
+                            </div>
+                        </div>               
+                        <div class="col-12 col-lg-6">  
+                           <h5><i class="fa fa-question" aria-hidden="true"></i> Question #{quiz.step != 0 ? quiz.step : ''}</h5>
+                            <h:dataTable value="#{quiz.question}" var="q"
+                                           styleClass="table order-table table-bordered table-condensed questions-show"
+                                           headerClass="thead-light order-table-header"
+                                           rowClasses="order-table-odd-row,order-table-even-row"
+                              >
+                                  <h:column>
+                                      <f:facet name="header">#</f:facet>
+                                      #{q.index != 0 ? q.index : ''}
+                                  </h:column>
 
-       <h3>Table</h3>
+                                  <h:column>
+                                      <f:facet name="header">question</f:facet>
+                                      #{ q.value }
+                                  </h:column>
+                              </h:dataTable>
+                        </div>
+                        <div class="col-12 col-lg-4"> 
+                            <h5 class="text-bold">&#x1f3c6; Top 5</h5>
+                            <h:dataTable value="#{quiz.scoreTable}" var="o"
+                                         styleClass="table order-table table-bordered table-condensed"
+                                         headerClass="order-table-header"
+                                         rowClasses="order-table-odd-row,order-table-even-row"
+                            >
+                               <h:column>
+                                  <f:facet name="header">Player</f:facet>
+                                  #{o.name}
+                               </h:column>
 
-              <h:dataTable value="#{quiz.scoreTable}" var="o"
-                           styleClass="order-table"
-                           headerClass="order-table-header"
-                           rowClasses="order-table-odd-row,order-table-even-row"
-              >
-                 <h:column>
-                    <f:facet name="header">Player</f:facet>
-                    #{o.name}
-                 </h:column>
-
-                 <h:column>
-                    <f:facet name="header">Score</f:facet>
-                    #{o.score}
-                 </h:column>
-              </h:dataTable>
-
-
-              <h3>Question #{quiz.step != 0 ? quiz.step : ''}</h3>
-
-              <h:dataTable value="#{quiz.question}" var="q"
-                           styleClass="order-table"
-                           headerClass="order-table-header"
-                           rowClasses="order-table-odd-row,order-table-even-row"
-              >
-                  <h:column>
-                      <f:facet name="header">number</f:facet>
-                      #{q.index != 0 ? q.index : ''}
-                  </h:column>
-
-                  <h:column>
-                      <f:facet name="header">question</f:facet>
-                      #{q.value}
-                  </h:column>
-              </h:dataTable>
-
+                               <h:column>
+                                  <f:facet name="header">Score</f:facet>
+                                  #{o.score}
+                               </h:column>
+                            </h:dataTable>
+                        </div>
+                    </div>    
+                </div>
+           </div>
+       </div>
    </body>
 </html>
