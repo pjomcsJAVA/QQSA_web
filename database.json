@@ -4,12 +4,16 @@
   },
   "questions" : {
     "question-1" : {
+      "correct" : 2,
+      "explanation" : "E a explicação...",
       "text-0" : "this is a question",
       "text-1" : "this is another answer",
       "text-2" : "this is another anwser",
       "text-3" : "this is correct"
     },
     "question-2" : {
+      "correct" : 1,
+      "explanation" : "E a explicação2.....",
       "text-0" : "question number 2?",
       "text-1" : "this is answer1",
       "text-2" : "this is another answer2",
