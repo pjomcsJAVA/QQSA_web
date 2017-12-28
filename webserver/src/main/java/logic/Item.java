@@ -2,13 +2,16 @@ package logic;
 
 public class Item implements Comparable<Item>{
 
-    int index;
+    private int index;
 
-    String value;
+    private String value;
 
-    public Item(int index, String value) {
+    private boolean correct;
+
+    public Item(int index, String value, boolean correct) {
         this.index = index;
         this.value = value;
+        this.correct= correct;
     }
 
     public int getIndex() {
@@ -25,11 +28,19 @@ public class Item implements Comparable<Item>{
 
     public void setValue(String value) {
         this.value = value;
+
+    }
+
+    public boolean isCorrect() {
+        return correct;
+    }
+    public void setCorrect(boolean correct) {
+        this.correct = correct;
     }
 
     @Override
     public int compareTo(Item o) {
-
         return this.index - o.getIndex();
     }
+
 }

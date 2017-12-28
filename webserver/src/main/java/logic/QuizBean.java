@@ -1,39 +1,50 @@
 package logic;
 
-import net.thegreshams.firebase4j.error.FirebaseException;
 import net.thegreshams.firebase4j.model.FirebaseResponse;
 import net.thegreshams.firebase4j.service.Firebase;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.*;
 
 @ManagedBean(name= "quiz")
 @ApplicationScoped
 public class QuizBean {
 
-    private static String SPLIT_REGEX = "[-]";
-    private static String FIRE_BASE_URL = "https://test-1ae31.firebaseio.com/"; //https://mds-q-b2d34.firebaseio.com/
-    private static long STEP_TIME_SECS = 10;
+    private static final String SPLIT_REGEX = "[-]";
+    private static final String FIRE_BASE_FILE = "firebase";
+    private static final String KEY_CORRECT = "correct";
+    private static final String KEY_EXPLANATION = "explanation";
+    private static final String KEY_USERS = "users";
+    private static final long STEP_TIME_SECS = 10;
+    private static final String PROPERTY_URL = "url";
 
     private List<Item> currentQuestion = new ArrayList<>();
     private List<Player> players;
     private Firebase firebase;
-    private int[] correctAnswers = {1, 2, 3};
+    private int[] correctAnswers = {1, 2, 3};// only for testing
     private int step = 0;
     private long lastTime = 0;
+    private int questionCount = 2; // get this variable from fb
+
+    private String currentExplanation;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         System.out.println("Entering init quiz");
         players = new ArrayList<>();
         try {
-            firebase = new Firebase(FIRE_BASE_URL);
+            String url = getFireBaseUrl(FIRE_BASE_FILE);
+            System.out.println("init url : "+url);
+            firebase = new Firebase(url);
             //firebase.delete();
 
-        } catch (FirebaseException  e) {
+        } catch (Throwable e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -41,20 +52,27 @@ public class QuizBean {
      * Perform a step increment in FireBase if a STEP_TIME_SECS have elapsed.
      */
     public void nextStep(){
-        System.out.println("Entering nextstep");
+        System.out.println("Entering nextStep");
         String map = "procedure";
         String key = "step";
         long currentTime = System.currentTimeMillis();
 
-        if(currentTime-lastTime > STEP_TIME_SECS *1000){
-            step++;
-            loadQuestion(); //done here?
+        if(currentTime - lastTime > STEP_TIME_SECS * 1000){
+            if(step < questionCount){
+                step++;
+                loadQuestion();
+            }
+            else{
+                loadScoreTable();
+            }
+
             Map<String, Object> stepMap = new HashMap<>();
             stepMap.put(key, step);
             FirebaseResponse response = null;
             try {
                 response = firebase.put(map, stepMap );
             } catch (Throwable e) {
+                e.printStackTrace();
             }
             System.out.println( "Result of POST:\n" + response );
 
@@ -68,21 +86,11 @@ public class QuizBean {
      * Loads the score table form firebase.
      *
      */
-    public void loadScoreTable(){
-        System.out.println("Entering getscoretable");
-
+    private void loadScoreTable(){
+        System.out.println("Entering loadScoreTable");
         players = new ArrayList<>();
-        String usersKey = "users";
-        FirebaseResponse response = null;
-        try {
-            response = firebase.get(usersKey);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
 
-        System.out.println( "Result of GET:\n" + response);
-
-        Map<String, Object> playersMap = response.getBody();
+        Map<String, Object> playersMap = getFirebaseMap(KEY_USERS);
 
         for (Map.Entry entryPlayer : playersMap.entrySet()) {
 
@@ -106,6 +114,54 @@ public class QuizBean {
     }
 
     /**
+     * Loads a question based on a step from Firebase.
+     *
+     */
+    private void loadQuestion(){
+        System.out.println("Entering getQuestion with step "+step);
+
+        Map<String, Object> questionsMap =  getFirebaseMap("questions/question-"+step);
+
+        if(!questionsMap.isEmpty()){
+            currentQuestion.clear();//clear old data
+            System.out.println("clear data question "+questionsMap.get(KEY_CORRECT));
+        }else{
+            return;
+        }
+        int correct = Integer.parseInt(questionsMap.get(KEY_CORRECT).toString());
+        currentExplanation = questionsMap.get(KEY_EXPLANATION).toString();
+
+        for (Map.Entry entryQuestion : questionsMap.entrySet()) {
+            String key = entryQuestion.getKey().toString();
+
+            if(key.split(SPLIT_REGEX).length == 2){
+                int k = Integer.parseInt(key.split(SPLIT_REGEX)[1]);
+                currentQuestion.add(new Item(k, entryQuestion.getValue().toString(), k==correct));
+            }
+        }
+    }
+
+    private Map<String, Object> getFirebaseMap(String path){
+        Map<String, Object> map = new HashMap<>();
+        try {
+            FirebaseResponse response = firebase.get(path);
+            System.out.println( "Result of GET:\n" + response);
+            map= response.getBody();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    private String getFireBaseUrl(String fireBaseFile) throws Exception {
+        final URL url = this.getClass().getResource(fireBaseFile);
+        InputStream is = url.openStream();
+        Properties p = new Properties();
+        p.load(is);
+        return p.getProperty(PROPERTY_URL);
+    }
+
+    /**
      * Returns a table showing the name and score with all the players registered.
      *
      * @return a list with the players.
@@ -119,37 +175,7 @@ public class QuizBean {
      *
      * @return a .
      */
-    public void loadQuestion(){
-        System.out.println("Entering getQuestion");
-
-        String questionsKey = "questions/question-"+step;
-        FirebaseResponse response= null;
-        try {
-            response = firebase.get(questionsKey);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        if(response == null){
-            return;
-        }
-        System.out.println( "Result of GET:\n" + response);
-        Map<String, Object> questionsMap = response.getBody();
-
-        for (Map.Entry entryQuestion : questionsMap.entrySet()) {
-            int k = Integer.parseInt(entryQuestion.getKey().toString().split(SPLIT_REGEX)[1]);
-            System.out.println("key: "+entryQuestion.getKey()+" "+entryQuestion.getValue());
-            currentQuestion.add(new Item(k, entryQuestion.getValue().toString()));
-
-        }
-    }
-
-    /**
-     * Returns a question
-     *
-     * @return a .
-     */
     public List<Item> getQuestion(){
-        System.out.println("Entering getQuestion");
         return currentQuestion;
     }
 
@@ -160,6 +186,15 @@ public class QuizBean {
      */
     public int getStep() {
         return step;
+    }
+
+    /**
+     * Getter for the explanation matching the @currentQuestion
+     *
+     * @return currentExplanation
+     */
+    public String getExplanation() {
+        return currentExplanation;
     }
 
 }
