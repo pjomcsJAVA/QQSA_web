@@ -17,6 +17,7 @@ public class QuizBean {
     private static String FIRE_BASE_URL = "https://test-1ae31.firebaseio.com/"; //https://mds-q-b2d34.firebaseio.com/
     private static long STEP_TIME_SECS = 10;
 
+    private List<Item> currentQuestion = new ArrayList<>();
     private List<Player> players;
     private Firebase firebase;
     private int[] correctAnswers = {1, 2, 3};
@@ -47,6 +48,7 @@ public class QuizBean {
 
         if(currentTime-lastTime > STEP_TIME_SECS *1000){
             step++;
+            loadQuestion(); //done here?
             Map<String, Object> stepMap = new HashMap<>();
             stepMap.put(key, step);
             FirebaseResponse response = null;
@@ -63,11 +65,10 @@ public class QuizBean {
     }
 
     /**
-     * Returns a table showing the name and score with all the players registered.
+     * Loads the score table form firebase.
      *
-     * @return a list with the players.
      */
-    public List<Player> getScoreTable(){
+    public void loadScoreTable(){
         System.out.println("Entering getscoretable");
 
         players = new ArrayList<>();
@@ -77,7 +78,6 @@ public class QuizBean {
             response = firebase.get(usersKey);
         } catch (Throwable e) {
             e.printStackTrace();
-            return new ArrayList<>();
         }
 
         System.out.println( "Result of GET:\n" + response);
@@ -103,37 +103,54 @@ public class QuizBean {
             players.add(p);
         }
         Collections.sort(players);
+    }
+
+    /**
+     * Returns a table showing the name and score with all the players registered.
+     *
+     * @return a list with the players.
+     */
+    public List<Player> getScoreTable(){
         return players;
     }
 
     /**
      * Returns a question
      *
-     * @return a list with the players.
+     * @return a .
      */
-    public List<Item> getQuestion(){
+    public void loadQuestion(){
         System.out.println("Entering getQuestion");
 
-        List<Item> questionList = new ArrayList<>();
         String questionsKey = "questions/question-"+step;
-        FirebaseResponse response;
+        FirebaseResponse response= null;
         try {
             response = firebase.get(questionsKey);
         } catch (Throwable e) {
             e.printStackTrace();
-            return new ArrayList<>();
         }
-
+        if(response == null){
+            return;
+        }
         System.out.println( "Result of GET:\n" + response);
         Map<String, Object> questionsMap = response.getBody();
 
         for (Map.Entry entryQuestion : questionsMap.entrySet()) {
             int k = Integer.parseInt(entryQuestion.getKey().toString().split(SPLIT_REGEX)[1]);
             System.out.println("key: "+entryQuestion.getKey()+" "+entryQuestion.getValue());
-            questionList.add(new Item(k, entryQuestion.getValue().toString()));
+            currentQuestion.add(new Item(k, entryQuestion.getValue().toString()));
 
         }
-        return questionList;
+    }
+
+    /**
+     * Returns a question
+     *
+     * @return a .
+     */
+    public List<Item> getQuestion(){
+        System.out.println("Entering getQuestion");
+        return currentQuestion;
     }
 
     /**
