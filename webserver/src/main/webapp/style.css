@@ -35,3 +35,7 @@
 .timer-animation{
     height:50px;
 }
+
+.explanation{
+    display: none;
+}

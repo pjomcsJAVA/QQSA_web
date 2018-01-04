@@ -11,5 +11,6 @@ var x = setInterval(function() {
     $(".number").hide();
     $(".disable-next-button").removeClass("disable-next-button");
     $(".timer-animation").hide();
+    $(".explanation").show();
   }
 }, 1000);  
