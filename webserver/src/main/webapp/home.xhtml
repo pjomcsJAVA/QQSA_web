@@ -27,37 +27,43 @@
                         <div class="col-12 col-lg-2">
                             <h:form>
                               <h5><h:outputText id = "outputMessage" value = "Step: #{quiz.step}"/></h5>
-                              <h:commandButton value="Next Step" action="#{quiz.nextStep}">
+                              <h:commandButton value="#{quiz.step == 0 ? 'Start' : 'Next Step'}" action="#{quiz.nextStep}" class="disable-next-button">
                                   <f:ajax execute = "inputName" render = "outputMessage" />
                               </h:commandButton>
                             </h:form>
-                            <div class="margin-top-40">
+                            <div class="margin-top-40 step-clock-#{quiz.step}">
                                 <h5><i class="fa fa-clock-o"></i> Clock</h5>
                                 <p>
-                                <img src="https://i.pinimg.com/originals/de/50/2a/de502ade8fc8fa2e69a5cceb39198bdf.jpg" style="height:50px;"></img>
+                                <img src="https://i.pinimg.com/originals/de/50/2a/de502ade8fc8fa2e69a5cceb39198bdf.jpg" class="timer-animation"></img>
                                 <span id="timeLeft">10s</span></p>
                             </div>
                         </div>               
-                        <div class="col-12 col-lg-6">  
+                        <div class="col-12 col-lg-6 step-#{quiz.step}">  
                            <h5><i class="fa fa-question" aria-hidden="true"></i> Question #{quiz.step != 0 ? quiz.step : ''}</h5>
                             <h:dataTable value="#{quiz.question}" var="q"
                                            styleClass="table order-table table-bordered table-condensed questions-show"
                                            headerClass="thead-light order-table-header"
                                            rowClasses="order-table-odd-row,order-table-even-row"
                               >
-                                  <h:column>
+                                  <h:column>                                  
                                       <f:facet name="header">#</f:facet>
-                                      #{q.index != 0 ? q.index : ''}
+                                      <span class="">#{q.index != 0 ? q.index : ''}</span>             
                                   </h:column>
 
                                   <h:column>
                                       <f:facet name="header">question</f:facet>
                                       #{ q.value }
                                   </h:column>
+                                  <h:column>
+                                      <f:facet name="header"></f:facet>
+                                      <span class="text-success text-bold correct-answer">
+                                          #{q.correct == true ? '&#10004;' : ''}
+                                      </span>
+                                  </h:column>                                
                               </h:dataTable>
                             <h5>#{quiz.explanation}</h5>
                         </div>
-                        <div class="col-12 col-lg-4"> 
+                        <div class="col-12 col-lg-4 step-#{quiz.step}"> 
                             <h5 class="text-bold">&#x1f3c6; Top 5</h5>
                             <h:dataTable value="#{quiz.scoreTable}" var="o"
                                          styleClass="table order-table table-bordered table-condensed"

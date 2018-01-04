@@ -3,11 +3,35 @@
 }
 
 #timeLeft{
-    font-size:24px;
-    margin-top: 4px;
+    font-size:32px;
+    margin-top: 9px;
 }
 
 .questions-show  tbody tr:first-child td{
     font-weight: bold;
     background-color: #f3f3f3;
+}
+
+.correct-answer{
+    font-weight: bold;
+    display: none;
+    font-size: 22px;
+}
+
+.step-0{
+    opacity: 0.4;
+}
+
+.step-clock-0{
+    display:none;
+}
+
+.disable-next-button{
+    pointer-events: none;
+    cursor: none;
+    opacity: 0.4;
+}
+
+.timer-animation{
+    height:50px;
 }

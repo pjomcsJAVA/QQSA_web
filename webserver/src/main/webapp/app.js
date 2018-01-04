@@ -6,6 +6,10 @@ var x = setInterval(function() {
   // If the count down is finished, write some text 
   if ( window.seconds < 0) {
     clearInterval(x);
-    document.getElementById("timeLeft").innerHTML = "EXPIRED";
+    document.getElementById("timeLeft").innerHTML = "&#8987; EXPIRED";
+    $(".correct-answer").show();
+    $(".number").hide();
+    $(".disable-next-button").removeClass("disable-next-button");
+    $(".timer-animation").hide();
   }
 }, 1000);  
