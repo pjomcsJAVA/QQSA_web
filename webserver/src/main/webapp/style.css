@@ -3,13 +3,21 @@
 }
 
 #timeLeft{
-    font-size:32px;
+    font-size:22px;
     margin-top: 9px;
+}
+
+.questions-show{
+    text-align: left;
+    font-size:24px;
+    background-color: rgba(255,255,255,0.9);
+    color:black;
 }
 
 .questions-show  tbody tr:first-child td{
     font-weight: bold;
     background-color: #f3f3f3;
+    display: none;
 }
 
 .correct-answer{
@@ -59,4 +67,8 @@
 .question-wrapper{
     padding-top: 30px!important;
     padding-bottom: 30px!important;
+}
+
+.display-none{
+    display:none;
 }
