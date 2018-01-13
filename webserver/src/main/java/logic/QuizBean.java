@@ -21,18 +21,13 @@ public class QuizBean {
     private static final String KEY_USERS = "users";
     private static final long STEP_TIME_SECS = 10;
     private static final String PROPERTY_URL = "url";
-
-    private List<Item> currentQuestion = new ArrayList<>();
+   
     private List<Player> players;
     private Firebase firebase;
-    private int[] correctAnswers = {1, 2, 3};// only for testing
     private int step = 0;
     private long lastTime = 0;
-    private int questionCount = 2; // get this variable from fb
     
     private Map<Integer, Question> questionsMap = new HashMap<>();
-
-    private String currentExplanation;
 
     @PostConstruct
     public void init() {
@@ -61,7 +56,7 @@ public class QuizBean {
         long currentTime = System.currentTimeMillis();
 
         if(currentTime - lastTime > STEP_TIME_SECS * 1000){
-            if(step < questionCount){
+            if(step < getQuestionsCount()){
                 step++;
             }
             else{
@@ -113,8 +108,8 @@ public class QuizBean {
 
                 int key = Integer.parseInt(sq);
                 int value = Integer.parseInt(entry.getValue().toString());
-
-                if(correctAnswers[key-1] == value){
+               
+                if(key <= questionsMap.size() && questionsMap.get(key).getCorrect() == value){
                     p.incrementScore();
                 }
             }
@@ -123,34 +118,11 @@ public class QuizBean {
         Collections.sort(players);
     }
 
-    /**
-     * Loads a question based on a step from Firebase.
+    
+     /**
+     * Loads all questions from Firebase.
      *
      */
-    private void loadQuestion(){
-        System.out.println("Entering loadQuestion with step "+step);
-
-        Map<String, Object> questionsMap =  getFirebaseMap("questions/question-"+step);
-
-        if(!questionsMap.isEmpty()){
-            currentQuestion.clear();//clear old data
-            System.out.println("clear data question "+questionsMap.get(KEY_CORRECT));
-        }else{
-            return;
-        }
-        int correct = Integer.parseInt(questionsMap.get(KEY_CORRECT).toString());
-        currentExplanation = questionsMap.get(KEY_EXPLANATION).toString();
-
-        for (Map.Entry entryQuestion : questionsMap.entrySet()) {
-            String key = entryQuestion.getKey().toString();
-
-            if(key.split(SPLIT_REGEX).length == 2){
-                int k = Integer.parseInt(key.split(SPLIT_REGEX)[1]);
-                currentQuestion.add(new Item(k, entryQuestion.getValue().toString(), k==correct));
-            }
-        }
-    }
-    
      private void loadQuestions(){
         System.out.println("Entering loadQuestions");
         
@@ -214,14 +186,18 @@ public class QuizBean {
     public int getStep() {
         return step;
     }
-
-    /**
-     * Getter for the explanation matching the @currentQuestion
+    
+    
+     /**
+     * Getter for the total number of questions available.
      *
-     * @return currentExplanation
+     * @return the total number of questions.
      */
-    public String getExplanation() {
-        return currentExplanation;
+    public int getQuestionsCount() {
+        return questionsMap.size();
     }
+    
+    
 
 }
+

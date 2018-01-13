@@ -20,6 +20,8 @@ public class Question {
     
     private String explanation;
     
+    private int correct;
+
     private List<Item> answers = new ArrayList<>(); 
 
     public Question(String question, String explanation, List<Item> answers) {
@@ -30,7 +32,7 @@ public class Question {
 
     public Question(Map<String, Object> questionData) {
         Integer corectStr = (Integer) questionData.get("correct");
-        int correct = corectStr;
+        this.correct = corectStr;
         this.question = (String) questionData.get("text-0");
         this.explanation = (String) questionData.get("explanation"); 
         int index = 0;
@@ -69,6 +71,15 @@ public class Question {
 
     public void setAnswers(List<Item> answers) {
         this.answers = answers;
+    }
+    
+    
+    public int getCorrect() {
+        return correct;
+    }
+
+    public void setCorrect(int correct) {
+        this.correct = correct;
     }
     
     public String toString(){
