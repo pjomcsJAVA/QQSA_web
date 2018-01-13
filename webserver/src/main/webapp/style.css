@@ -14,12 +14,6 @@
     color:black;
 }
 
-.questions-show  tbody tr:first-child td{
-    font-weight: bold;
-    background-color: #f3f3f3;
-    display: none;
-}
-
 .correct-answer{
     font-weight: bold;
     display: none;
