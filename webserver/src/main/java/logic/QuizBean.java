@@ -138,7 +138,6 @@ public class QuizBean {
         }
     }
 
-    
 
     private Map<String, Object> getFirebaseMap(String path){
         Map<String, Object> map = new HashMap<>();
