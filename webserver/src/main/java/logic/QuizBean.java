@@ -56,8 +56,8 @@ public class QuizBean {
      */
     public void nextStep(){
         System.out.println("Entering nextStep");
-        String map = "procedure";
-        String key = "step";
+        final String map = "procedure";
+        final String key = "step";
         long currentTime = System.currentTimeMillis();
 
         if(currentTime - lastTime > STEP_TIME_SECS * 1000){
@@ -67,16 +67,24 @@ public class QuizBean {
             else{
                 loadScoreTable();
             }
-
-            Map<String, Object> stepMap = new HashMap<>();
-            stepMap.put(key, step);
-            FirebaseResponse response = null;
-            try {
-                response = firebase.put(map, stepMap );
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-            System.out.println( "Result of POST:\n" + response );
+            
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run(){
+                    Map<String, Object> stepMap = new HashMap<>();
+                    stepMap.put(key, step);
+                    FirebaseResponse response = null;
+                    try {
+                        response = firebase.put(map, stepMap );
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println( "Result of POST:\n" + response );
+                }
+            });
+            
+            t.start();
+            
 
             lastTime = currentTime;
         }else{
