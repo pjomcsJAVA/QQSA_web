@@ -39,3 +39,23 @@
 .explanation{
     display: none;
 }
+
+.step-number{
+    display:inline-block;
+    margin-right: 20px;
+    top: 5px;
+    position: relative;
+}
+
+.cursor-pointer{
+    cursor:pointer;
+}
+
+.programming-icon{
+    margin-right: 10px;
+}
+
+.questions-wrapper{
+    padding-top: 30px!important;
+    padding-bottom: 30px!important;
+}
