@@ -46,10 +46,12 @@
                         <f:ajax execute = "inputName" render = "outputMessage" />
                     </h:commandButton>
               </h:form>
+              
+              
           </div>
         </nav>
         <!-- Masthead -->
-        <header class="masthead text-white text-center #{quiz.step != 0 ? '' : ''}">
+        <header class="masthead text-white text-center">
          <div class="overlay"></div>
          <div class="container">
            <div class="row">
@@ -57,7 +59,8 @@
                  <h1 class="mb-5">
                       #{quiz.step != 0 ? quiz.question.question : 'Vamos iniciar o question&aacute;rio sobre Extremme Programming. Est&aacute;s pronto?'}
                  </h1>
-                <div class="#{quiz.step != 0 ? '' : 'display-none'}">
+                 
+                <div class="#{ (quiz.step > 1 && quiz.step < (quiz.questionsCount-1) )  ? '' : 'display-none'}">
                     <h:dataTable value="#{quiz.question.answers}" var="q"
                                            styleClass="table order-table table-bordered table-condensed questions-show"
                                            headerClass="thead-light order-table-header"
@@ -91,7 +94,7 @@
         </header>      
        
        
-       <div class="container container-fluid #{quiz.step != 0 ? '' : 'display-none'}">  
+       <div class="container container-fluid #{ (quiz.step == quiz.questionsCount-1)  ? '' : 'display-none'}">  
            <div class="card margin-top-40">
                 <div class="card-body">
                     <div class="row">
