@@ -34,7 +34,7 @@
           <div class="container">
               <a class="navbar-brand" href="#"><img src="/webserver/img/programming.png" class="programming-icon"></img> Extreme Programming</a>  
               
-              <span class="step-clock-#{quiz.step}">
+              <span class="step-clock-#{quiz.step}" >
                 <img src="https://i.pinimg.com/originals/de/50/2a/de502ade8fc8fa2e69a5cceb39198bdf.jpg" class="timer-animation"></img>
                 <!-- <i class="fa fa-clock-o"></i> -->
                 <span id="timeLeft">10s</span>
@@ -42,7 +42,14 @@
               
               <h:form>
                     <h5 class="step-number"><h:outputText id = "outputMessage" value = "Passo: #{quiz.step} / #{ quiz.questionsCount }"/></h5>
-                    <h:commandButton value="#{quiz.step == 0 ? 'Iniciar' : 'Pr&oacute;ximo passo'}" action="#{quiz.nextStep}" class="disable-next-button btn btn-primary cursor-pointer">
+                    <h:commandButton value="#{quiz.step == 0 ? 'Iniciar' : 'Pr&oacute;ximo passo'}" 
+                                     action="#{quiz.nextStep}" class="disable-next-button btn btn-primary cursor-pointer" 
+                                     rendered="#{quiz.step != quiz.questionsCount}">
+                        <f:ajax execute = "inputName" render = "outputMessage" />
+                    </h:commandButton>
+                    <h:commandButton value="Ver Pontuação Total" 
+                                     action="top10.xhtml?faces-redirect=true" class="disable-next-button btn btn-primary cursor-pointer" 
+                                     rendered="#{quiz.step == quiz.questionsCount}">
                         <f:ajax execute = "inputName" render = "outputMessage" />
                     </h:commandButton>
               </h:form> 
