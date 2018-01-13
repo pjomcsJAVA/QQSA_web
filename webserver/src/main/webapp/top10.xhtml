@@ -33,68 +33,19 @@
         <nav class="navbar navbar-light bg-light static-top">
           <div class="container">
               <a class="navbar-brand" href="#"><img src="/webserver/img/programming.png" class="programming-icon"></img> Extreme Programming</a>  
-              
               <span class="step-clock-#{quiz.step}">
                 <img src="https://i.pinimg.com/originals/de/50/2a/de502ade8fc8fa2e69a5cceb39198bdf.jpg" class="timer-animation"></img>
                 <!-- <i class="fa fa-clock-o"></i> -->
                 <span id="timeLeft">10s</span>
               </span>
-              
-              <h:form>
-                    <h5 class="step-number"><h:outputText id = "outputMessage" value = "Passo: #{quiz.step} / #{ quiz.questionsCount }"/></h5>
-                    <h:commandButton value="#{quiz.step == 0 ? 'Iniciar' : 'Pr&oacute;ximo passo'}" action="#{quiz.nextStep}" class="disable-next-button btn btn-primary cursor-pointer">
-                        <f:ajax execute = "inputName" render = "outputMessage" />
-                    </h:commandButton>
-              </h:form> 
-              
           </div>
         </nav>
         <!-- Masthead -->
         <header class="masthead text-white text-center">
          <div class="overlay"></div>
          <div class="container">
-           <div class="row">
-             <div class="col-xl-9 mx-auto">
-                 <h1 class="mb-5">
-                      #{quiz.step != 0 ? quiz.question.question : 'Vamos iniciar o question&aacute;rio sobre Extremme Programming. Est&aacute;s pronto?'}
-                 </h1>
-                    
-                <div id="questionOptions" class="#{ (quiz.step >= 1 and quiz.questionsCount >= quiz.step)  ? '' : 'display-none'}">
-                    <h:dataTable value="#{quiz.question.answers}" var="q"
-                                           styleClass="table order-table table-bordered table-condensed questions-show"
-                                           headerClass="thead-light order-table-header"
-                                           rowClasses="order-table-odd-row,order-table-even-row"
-                              >
-                    <h:column>                                  
-                        <f:facet name="header">#</f:facet>
-                        <span class="">#{q.index != 0 ? (q.index-1) : ''}</span>             
-                    </h:column>
-
-                    <h:column>
-                        <f:facet name="header">Op&ccedil;&otilde;es</f:facet>
-                        #{ q.value }
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header"></f:facet>
-                        <span class="text-success text-bold correct-answer">
-                            #{q.correct == true ? '&#10004;' : ''}
-                        </span>
-                    </h:column>                                
-                </h:dataTable>
-                    <h5 class="explanation"><i class="fa fa-info-circle" aria-hidden="true"></i> #{quiz.question.explanation}</h5>
-                    
-                    <progress max="#{ quiz.questionsCount }" value="#{ quiz.step }" class="progress-bar"></progress>
-                </div>
-            </div>
-             <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
-
-             </div>
-           </div>
-         </div>
-        </header>      
        
-       
-       <div class="container container-fluid #{ (quiz.step == (quiz.questionsCount-1))  ? '' : 'display-none'}">  
+       <div class="container container-fluid">  
            <div class="card margin-top-40">
                 <div class="card-body">
                     <div class="row">
@@ -120,5 +71,9 @@
                 </div>
            </div>
        </div>
+         </div>
+        </header>      
+       
+
    </body>
 </html>
