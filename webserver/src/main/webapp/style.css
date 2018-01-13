@@ -72,3 +72,13 @@
 .display-none{
     display:none;
 }
+
+.progress-bar{
+    margin:20px 0;
+    webkit-appearance: progress-bar;
+    color:#007bff!important;
+    background-color:white!important;
+    height: 20px;
+    width: 100%;
+    border-radius: 2px;
+}
