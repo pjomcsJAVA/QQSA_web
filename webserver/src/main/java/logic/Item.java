@@ -3,9 +3,7 @@ package logic;
 public class Item implements Comparable<Item>{
 
     private int index;
-
     private String value;
-
     private boolean correct;
 
     public Item(int index, String value, boolean correct) {
@@ -42,5 +40,12 @@ public class Item implements Comparable<Item>{
     public int compareTo(Item o) {
         return this.index - o.getIndex();
     }
-
+    
+    public String toString(){
+        StringBuilder sb = new StringBuilder("Index: "+index);
+        sb.append(" value: "+value);
+        sb.append(" corect: "+correct);
+        sb.append("\n");
+        return sb.toString();
+    } 
 }

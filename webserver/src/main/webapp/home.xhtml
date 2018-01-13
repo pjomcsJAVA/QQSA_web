@@ -40,7 +40,8 @@
                         </div>               
                         <div class="col-12 col-lg-6 step-#{quiz.step}">  
                            <h5><i class="fa fa-question" aria-hidden="true"></i> Question #{quiz.step != 0 ? quiz.step : ''}</h5>
-                            <h:dataTable value="#{quiz.question}" var="q"
+                           <h5 class="explanation"> #{quiz.question.question}</h5>
+                           <h:dataTable value="#{quiz.question.answers}" var="q"
                                            styleClass="table order-table table-bordered table-condensed questions-show"
                                            headerClass="thead-light order-table-header"
                                            rowClasses="order-table-odd-row,order-table-even-row"
@@ -61,7 +62,7 @@
                                       </span>
                                   </h:column>                                
                               </h:dataTable>
-                            <h5 class="explanation"><i class="fa fa-info-circle" aria-hidden="true"></i> #{quiz.explanation}</h5>
+                            <h5 class="explanation"><i class="fa fa-info-circle" aria-hidden="true"></i> #{quiz.question.explanation}</h5>
                         </div>
                         <div class="col-12 col-lg-4 step-#{quiz.step}"> 
                             <h5 class="text-bold">&#x1f3c6; Top 5</h5>

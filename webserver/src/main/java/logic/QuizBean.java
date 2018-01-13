@@ -29,6 +29,8 @@ public class QuizBean {
     private int step = 0;
     private long lastTime = 0;
     private int questionCount = 2; // get this variable from fb
+    
+    private Map<Integer, Question> questionsMap = new HashMap<>();
 
     private String currentExplanation;
 
@@ -41,6 +43,7 @@ public class QuizBean {
             System.out.println("init url : "+url);
             firebase = new Firebase(url);
             //firebase.delete();
+            loadQuestions();
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -60,7 +63,6 @@ public class QuizBean {
         if(currentTime - lastTime > STEP_TIME_SECS * 1000){
             if(step < questionCount){
                 step++;
-                loadQuestion();
             }
             else{
                 loadScoreTable();
@@ -118,7 +120,7 @@ public class QuizBean {
      *
      */
     private void loadQuestion(){
-        System.out.println("Entering getQuestion with step "+step);
+        System.out.println("Entering loadQuestion with step "+step);
 
         Map<String, Object> questionsMap =  getFirebaseMap("questions/question-"+step);
 
@@ -140,6 +142,23 @@ public class QuizBean {
             }
         }
     }
+    
+     private void loadQuestions(){
+        System.out.println("Entering loadQuestions");
+        
+        Map<String, Object> fbQuestionsMap =  getFirebaseMap("questions");
+        
+        for (Map.Entry<String, Object> entry : fbQuestionsMap.entrySet()) {
+            int key = Integer.parseInt(entry.getKey().substring(entry.getKey().length()-1));
+            Map<String, Object> questionMap = (Map<String, Object>) entry.getValue();
+
+            Question question = new Question(questionMap);
+            System.out.println(question);
+            questionsMap.put(key, question);
+        }
+    }
+
+    
 
     private Map<String, Object> getFirebaseMap(String path){
         Map<String, Object> map = new HashMap<>();
@@ -175,8 +194,8 @@ public class QuizBean {
      *
      * @return a .
      */
-    public List<Item> getQuestion(){
-        return currentQuestion;
+    public Question getQuestion(){
+        return questionsMap.get(step);
     }
 
     /**
