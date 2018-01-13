@@ -16,9 +16,8 @@ public class QuizBean {
 
     private static final String SPLIT_REGEX = "[-]";
     private static final String FIRE_BASE_FILE = "firebase";
-    private static final String KEY_CORRECT = "correct";
-    private static final String KEY_EXPLANATION = "explanation";
     private static final String KEY_USERS = "users";
+    private static final String KEY_QUESTIONS= "questions";
     private static final long STEP_TIME_SECS = 10;
     private static final String PROPERTY_URL = "url";
    
@@ -28,6 +27,7 @@ public class QuizBean {
     private long lastTime = 0;
     
     private Map<Integer, Question> questionsMap = new HashMap<>();
+    
 
     @PostConstruct
     public void init() {
@@ -58,12 +58,8 @@ public class QuizBean {
         if(currentTime - lastTime > STEP_TIME_SECS * 1000){
             if(step < getQuestionsCount()){
                 step++;
-            }
-            else{
-                loadScoreTable();
-            }
-            
-            Thread t = new Thread(new Runnable() {
+                
+                Thread t = new Thread(new Runnable() {
                 @Override
                 public void run(){
                     Map<String, Object> stepMap = new HashMap<>();
@@ -79,7 +75,10 @@ public class QuizBean {
             });
             
             t.start();
-            
+            }
+            else{
+                loadScoreTable();
+            }
 
             lastTime = currentTime;
         }else{
@@ -126,7 +125,7 @@ public class QuizBean {
      private void loadQuestions(){
         System.out.println("Entering loadQuestions");
         
-        Map<String, Object> fbQuestionsMap =  getFirebaseMap("questions");
+        Map<String, Object> fbQuestionsMap =  getFirebaseMap(KEY_QUESTIONS);
         
         for (Map.Entry<String, Object> entry : fbQuestionsMap.entrySet()) {
             int key = Integer.parseInt(entry.getKey().substring(entry.getKey().length()-1));
@@ -174,6 +173,7 @@ public class QuizBean {
      * @return a .
      */
     public Question getQuestion(){
+        System.out.println("Entering getQuestion");
         return questionsMap.get(step);
     }
 
