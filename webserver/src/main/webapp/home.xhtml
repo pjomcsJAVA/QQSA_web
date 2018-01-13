@@ -42,6 +42,7 @@
               
               <h:form>
                     <h5 class="step-number"><h:outputText id = "outputMessage" value = "Passo: #{quiz.step} / #{ quiz.questionsCount }"/></h5>
+
                     <h:commandButton value="#{quiz.step == 0 ? 'Iniciar' : 'Pr&oacute;ximo passo'}" 
                                      action="#{quiz.nextStep}" class="disable-next-button btn btn-primary cursor-pointer" 
                                      rendered="#{quiz.step != quiz.questionsCount}">
