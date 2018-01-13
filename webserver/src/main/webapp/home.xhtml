@@ -44,11 +44,11 @@
                     <h5 class="step-number"><h:outputText id = "outputMessage" value = "Passo: #{quiz.step} / #{ quiz.questionsCount }"/></h5>
 
                     <h:commandButton value="#{quiz.step == 0 ? 'Iniciar' : 'Pr&oacute;ximo passo'}" 
-                                     action="#{quiz.nextStep}" class="disable-next-button btn btn-primary cursor-pointer" 
+                                     action="#{quiz.nextStep}" class="#{quiz.step == 0 ? '' : 'disable-next-button'} btn btn-primary cursor-pointer" 
                                      rendered="#{quiz.step != quiz.questionsCount}">
                         <f:ajax execute = "inputName" render = "outputMessage" />
                     </h:commandButton>
-                    <h:commandButton value="Ver Pontuação Total" 
+                    <h:commandButton value="Ver Pontua&ccedil;&atilde;o Total" 
                                      action="top10.xhtml?faces-redirect=true" class="disable-next-button btn btn-primary cursor-pointer" 
                                      rendered="#{quiz.step == quiz.questionsCount}">
                         <f:ajax execute = "inputName" render = "outputMessage" />
@@ -101,7 +101,7 @@
          </div>
         </header>      
        
-       
+       <!--
        <div class="container container-fluid #{ (quiz.step == (quiz.questionsCount-1))  ? '' : 'display-none'}">  
            <div class="card margin-top-40">
                 <div class="card-body">
@@ -128,5 +128,6 @@
                 </div>
            </div>
        </div>
+       -->
    </body>
 </html>
