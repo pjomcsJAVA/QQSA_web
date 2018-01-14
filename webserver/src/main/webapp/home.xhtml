@@ -33,15 +33,16 @@
         <nav class="navbar navbar-light bg-light static-top navbar-static-top">
           <div class="container">
               <a class="navbar-brand" href="#"><img src="/webserver/img/programming.png" class="programming-icon"></img> Extreme Programming</a>  
-              
+                            
               <span class="step-clock-#{quiz.step}" >
                 <img src="https://i.pinimg.com/originals/de/50/2a/de502ade8fc8fa2e69a5cceb39198bdf.jpg" class="timer-animation"></img>
                 <!-- <i class="fa fa-clock-o"></i> -->
                 <span id="timeLeft">10s</span>
               </span>
               
-              <h:form>
-                    <h5 class="step-number"><h:outputText id = "outputMessage" value = "Passo: #{quiz.step} / #{ quiz.questionsCount }"/></h5>
+              <h:form><progress max="#{ quiz.questionsCount }" value="#{ quiz.step }" class="progress-bar" style="display:inline;"></progress>
+                    <h5 class="step-number"><h:outputText id = "outputMessage" value = "Passo: #{quiz.step} / #{ quiz.questionsCount }"/>   
+                        </h5>
 
                     <h:commandButton value="#{quiz.step == 0 ? 'Iniciar' : 'Pr&oacute;ximo passo'}" 
                                      action="#{quiz.nextStep}" class="#{quiz.step == 0 ? '' : 'disable-next-button'} btn btn-primary cursor-pointer" 
@@ -89,9 +90,7 @@
                         </span>
                     </h:column>                                
                 </h:dataTable>
-                    <h5 class="explanation"><i class="fa fa-info-circle" aria-hidden="true"></i> #{quiz.question.explanation}</h5>
-                    
-                    <progress max="#{ quiz.questionsCount }" value="#{ quiz.step }" class="progress-bar"></progress>
+                    <h5 class="explanation"><i class="fa fa-info-circle" aria-hidden="true"></i> #{quiz.question.explanation}</h5>                 
                 </div>
             </div>
              <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">

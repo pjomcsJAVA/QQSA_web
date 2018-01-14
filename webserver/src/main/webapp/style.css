@@ -68,13 +68,15 @@
 }
 
 .progress-bar{
-    margin:20px 0;
     webkit-appearance: progress-bar;
     color:#007bff!important;
     background-color:white!important;
     height: 20px;
-    width: 100%;
+    width: 100px;
     border-radius: 2px;
+    position: relative;
+    top:7px;
+    margin-right: 10px;
 }
 
 
