@@ -2,6 +2,14 @@
     margin-top: 40px;
 }
 
+.margin-top-10{
+    margin-top: 10px;
+}
+
+.margin-bottom-10{
+    margin-bottom: 10px;
+}
+
 #timeLeft{
     font-size:22px;
     margin-top: 9px;
@@ -106,4 +114,10 @@
 
 .align-right{
     text-align:right;
+}
+
+.btn-update-wrapper{
+    height: 100%;
+    width: 100%;
+    display: block;
 }
