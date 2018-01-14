@@ -54,9 +54,12 @@ public class QuizBean {
     public void nextStep(){
         System.out.println("Entering nextStep with step "+step);
         final String map = "procedure";
-        final String key = "step";
+        final String keyStep = "step";
+        final String keyTimeStamp = "timestamp";
         final long currentTime = System.currentTimeMillis();
-       
+        
+        System.out.println("CurrentTimeStamp "+currentTime);
+        
         if(currentTime - lastTime > STEP_TIME_SECS * 1000){
             if(step < getQuestionsCount()){
                 step++;
@@ -81,7 +84,8 @@ public class QuizBean {
                     @Override
                     public void run(){
                         Map<String, Object> stepMap = new HashMap<>();
-                        stepMap.put(key, step);
+                        stepMap.put(keyStep, step);
+                        stepMap.put(keyTimeStamp, currentTime);
                         FirebaseResponse response = null;
                         try {
                             response = firebase.put(map, stepMap );
@@ -96,7 +100,7 @@ public class QuizBean {
                     @Override
                     public void run(){
                         try {
-                            Thread.sleep(9000);// waits for mobile app set the responses
+                            Thread.sleep(10000);// waits for mobile app set the responses in firebase
                         } catch (InterruptedException ex) {
                             Logger.getLogger(QuizBean.class.getName()).log(Level.SEVERE, null, ex);
                         }

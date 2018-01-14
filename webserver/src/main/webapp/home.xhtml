@@ -98,7 +98,7 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header"></f:facet>
-                        <span class="text-success text-bold correct-answer">
+                        <span class="#{quiz.timer == 0 ? '' : 'correct-answer'} text-success text-bold">
                             #{q.correct == true ? '&#10004;' : ''}
                         </span>
                     </h:column>
