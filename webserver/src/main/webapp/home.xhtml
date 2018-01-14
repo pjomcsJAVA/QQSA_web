@@ -98,10 +98,8 @@
                     <div class="explanation explanation-wrapper align-left">
                     <h5><i class="fa fa-info-circle" aria-hidden="true"></i> #{quiz.question.explanation}</h5>     
                     </div>
-                    
-                    <progress max="#{ quiz.questionsCount }" value="#{ quiz.step }" class="progress-bar"></progress>
-                   
-                    <h:commandButton value="Push">
+                                       
+                    <h:commandButton value="Actualizar" class='btn btn-primary bnt-sm margin-top-10'>
                           <f:ajax render="questionTable" />
                     </h:commandButton>
 
