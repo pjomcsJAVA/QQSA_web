@@ -5,6 +5,8 @@ public class Item implements Comparable<Item>{
     private int index;
     private String value;
     private boolean correct;
+    private int count;
+
 
     public Item(int index, String value, boolean correct) {
         this.index = index;
@@ -34,6 +36,19 @@ public class Item implements Comparable<Item>{
     }
     public void setCorrect(boolean correct) {
         this.correct = correct;
+    }
+    
+    
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+    
+    public void incrementCount(){
+        this.count++;
     }
 
     @Override

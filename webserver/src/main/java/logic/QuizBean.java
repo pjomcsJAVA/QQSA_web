@@ -9,6 +9,8 @@ import javax.faces.bean.ManagedBean;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ManagedBean(name= "quiz")
 @ApplicationScoped
@@ -24,6 +26,7 @@ public class QuizBean {
     private List<Player> players;
     private Firebase firebase;
     private int step = 0;
+    private int stepStat = 0;
     private long lastTime = 0;
     
     private Map<Integer, Question> questionsMap = new HashMap<>();
@@ -53,28 +56,43 @@ public class QuizBean {
         System.out.println("Entering nextStep");
         final String map = "procedure";
         final String key = "step";
-        long currentTime = System.currentTimeMillis();
+        final long currentTime = System.currentTimeMillis();
 
         if(currentTime - lastTime > STEP_TIME_SECS * 1000){
             if(step < getQuestionsCount()){
                 step++;
                 
-                Thread t = new Thread(new Runnable() {
-                @Override
-                public void run(){
-                    Map<String, Object> stepMap = new HashMap<>();
-                    stepMap.put(key, step);
-                    FirebaseResponse response = null;
-                    try {
-                        response = firebase.put(map, stepMap );
-                    } catch (Throwable e) {
-                        e.printStackTrace();
+                Thread tStep = new Thread(new Runnable() {
+                    @Override
+                    public void run(){
+                        Map<String, Object> stepMap = new HashMap<>();
+                        stepMap.put(key, step);
+                        FirebaseResponse response = null;
+                        try {
+                            response = firebase.put(map, stepMap );
+                        } catch (Throwable e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println( "Result of POST:\n" + response );
                     }
-                    System.out.println( "Result of POST:\n" + response );
-                }
-            });
-            
-            t.start();
+                });
+                
+                Thread tStatistics = new Thread(new Runnable() {
+                    @Override
+                    public void run(){
+                        try {
+                            Thread.sleep(9000);// waits for mobile app set the responses
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(QuizBean.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        loadStatistics();
+                        System.out.println("loadStatistics done in time of (ms): " + (System.currentTimeMillis()- currentTime));
+                        stepStat++;
+                    }
+                });
+
+                tStep.start();
+                tStatistics.start();
             }
             else{
                 loadScoreTable();
@@ -92,8 +110,7 @@ public class QuizBean {
      */
     private void loadScoreTable(){
         System.out.println("Entering loadScoreTable");
-        players = new ArrayList<>();
-
+        
         Map<String, Object> playersMap = getFirebaseMap(KEY_USERS);
 
         for (Map.Entry entryPlayer : playersMap.entrySet()) {
@@ -115,6 +132,22 @@ public class QuizBean {
             players.add(p);
         }
         Collections.sort(players);
+    }
+    
+    private void loadStatistics(){
+        System.out.println("Entering loadStatistics");
+
+        Question question = getQuestion();
+        
+        Map<String, Object> playersMap = getFirebaseMap(KEY_USERS);
+
+        for (Map.Entry entryPlayer : playersMap.entrySet()) {
+
+            Map<String, Object> user = (Map<String, Object>) entryPlayer.getValue();
+            
+            int option = (Integer) user.get("answer-"+step);
+            question.incrementItemByIndex(option);
+        }
     }
 
     

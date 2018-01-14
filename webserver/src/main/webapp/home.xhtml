@@ -66,9 +66,9 @@
                  <h1 class="mb-5 question-text">
                       #{quiz.step != 0 ? quiz.question.question : 'Vamos iniciar o question&aacute;rio sobre Extremme Programming. Est&aacute;s pronto?'}
                  </h1>
-                    
+                    <h:form> 
                 <div id="questionOptions" class="#{ (quiz.step >= 1 and quiz.questionsCount >= quiz.step)  ? '' : 'display-none'}">
-                    <h:dataTable value="#{quiz.question.answers}" var="q"
+                    <h:dataTable id="questionTable" value="#{quiz.question.answers}" var="q"
                                            styleClass="table order-table table-bordered table-condensed questions-show"
                                            headerClass="thead-light order-table-header"
                                            rowClasses="order-table-odd-row,order-table-even-row"
@@ -87,12 +87,22 @@
                         <span class="text-success text-bold correct-answer">
                             #{q.correct == true ? '&#10004;' : ''}
                         </span>
-                    </h:column>                                
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Statistics</f:facet>
+                        #{ q.count }
+                    </h:column>    
                 </h:dataTable>
                     <h5 class="explanation"><i class="fa fa-info-circle" aria-hidden="true"></i> #{quiz.question.explanation}</h5>
                     
                     <progress max="#{ quiz.questionsCount }" value="#{ quiz.step }" class="progress-bar"></progress>
+                   
+                    <h:commandButton value="Push">
+                          <f:ajax render="questionTable" />
+                    </h:commandButton>
                 </div>
+                </h:form> 
+                
             </div>
              <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
 

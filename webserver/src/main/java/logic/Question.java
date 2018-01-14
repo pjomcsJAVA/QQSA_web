@@ -82,6 +82,14 @@ public class Question {
         this.correct = correct;
     }
     
+    public void incrementItemByIndex(int index){
+        for (Item answer : answers) {
+            if(answer.getIndex() == index){
+                answer.incrementCount();
+            }
+        }
+    }
+    
     public String toString(){
         StringBuilder sb = new StringBuilder("Question: "+question);
         sb.append("\nexplanation "+explanation);
