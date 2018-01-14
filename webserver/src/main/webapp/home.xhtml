@@ -64,7 +64,7 @@
          <div class="container">
            <div class="row">
              <div class="col-xl-9 mx-auto">
-                 <h1 class="mb-5 question-text">
+                 <h1 class="mb-5 question-text align-left">
                       #{quiz.step != 0 ? quiz.question.question : 'Vamos iniciar o question&aacute;rio sobre Extremme Programming. Est&aacute;s pronto?'}
                  </h1>
                     
@@ -90,7 +90,9 @@
                         </span>
                     </h:column>                                
                 </h:dataTable>
-                    <h5 class="explanation"><i class="fa fa-info-circle" aria-hidden="true"></i> #{quiz.question.explanation}</h5>                 
+                <div class="explanation explanation-wrapper align-left">
+                    <h5><i class="fa fa-info-circle" aria-hidden="true"></i> #{quiz.question.explanation}</h5>     
+                </div>
                 </div>
             </div>
              <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
