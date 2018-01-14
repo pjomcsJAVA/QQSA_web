@@ -26,10 +26,9 @@ public class QuizBean {
     private List<Player> players;
     private Firebase firebase;
     private int step = 0;
-    private int stepStat = 0;
     private long lastTime = 0;
     
-    private Map<Integer, Question> questionsMap = new HashMap<>();
+    private final Map<Integer, Question> questionsMap = new HashMap<>();
     
 
     @PostConstruct
@@ -40,7 +39,6 @@ public class QuizBean {
             String url = getFireBaseUrl(FIRE_BASE_FILE);
             System.out.println("init url : "+url);
             firebase = new Firebase(url);
-            //firebase.delete();
             loadQuestions();
 
         } catch (Throwable e) {
@@ -53,11 +51,11 @@ public class QuizBean {
      * Perform a step increment in FireBase if a STEP_TIME_SECS have elapsed.
      */
     public void nextStep(){
-        System.out.println("Entering nextStep");
+        System.out.println("Entering nextStep with step "+step);
         final String map = "procedure";
         final String key = "step";
         final long currentTime = System.currentTimeMillis();
-
+       
         if(currentTime - lastTime > STEP_TIME_SECS * 1000){
             if(step < getQuestionsCount()){
                 step++;
@@ -87,17 +85,15 @@ public class QuizBean {
                         }
                         loadStatistics();
                         System.out.println("loadStatistics done in time of (ms): " + (System.currentTimeMillis()- currentTime));
-                        stepStat++;
+                        if(step == getQuestionsCount()){
+                            loadScoreTable();
+                        }
                     }
                 });
 
                 tStep.start();
                 tStatistics.start();
             }
-            else{
-                loadScoreTable();
-            }
-
             lastTime = currentTime;
         }else{
             System.out.println( "Not enough time yet");
@@ -197,6 +193,10 @@ public class QuizBean {
      * @return a list with the players.
      */
     public List<Player> getScoreTable(){
+        System.out.println("Entering getScoreTable");
+        for (Player player : players) {
+            System.out.println(player.getName());
+        }
         return players;
     }
 
