@@ -114,12 +114,12 @@ public class QuizBean {
             Map<String, Object> user = (Map<String, Object>) entryPlayer.getValue();
             Player p = new Player(entryPlayer.getKey().toString());
 
-            for (Map.Entry entry : user.entrySet()) {
-                System.out.println(entry.getKey()+" : "+entry.getValue());
-                String sq = entry.getKey().toString().split(SPLIT_REGEX)[1];
+            for (Map.Entry entryAnswer : user.entrySet()) {
+                System.out.println(entryAnswer.getKey()+" : "+entryAnswer.getValue());
+                String ansKey = entryAnswer.getKey().toString().split(SPLIT_REGEX)[1];
 
-                int key = Integer.parseInt(sq);
-                int value = Integer.parseInt(entry.getValue().toString());
+                int key = Integer.parseInt(ansKey);
+                int value = Integer.parseInt(entryAnswer.getValue().toString());
                
                 if(key <= questionsMap.size() && questionsMap.get(key).getCorrect() == value){
                     p.incrementScore();
@@ -138,10 +138,14 @@ public class QuizBean {
         Map<String, Object> playersMap = getFirebaseMap(KEY_USERS);
 
         for (Map.Entry entryPlayer : playersMap.entrySet()) {
-
             Map<String, Object> user = (Map<String, Object>) entryPlayer.getValue();
             
-            int option = (Integer) user.get("answer-"+step);
+            int option =0;
+            try{
+                option= (Integer) user.get("answer-"+step);
+            }catch (NullPointerException e){
+                System.out.println("User retrived do not have answer-"+step+" defined! "+e.getMessage());
+            }
             question.incrementItemByIndex(option);
         }
     }
@@ -194,9 +198,6 @@ public class QuizBean {
      */
     public List<Player> getScoreTable(){
         System.out.println("Entering getScoreTable");
-        for (Player player : players) {
-            System.out.println(player.getName());
-        }
         return players;
     }
 
@@ -218,7 +219,6 @@ public class QuizBean {
     public int getStep() {
         return step;
     }
-    
     
      /**
      * Getter for the total number of questions available.
