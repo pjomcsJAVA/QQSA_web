@@ -68,16 +68,42 @@
 }
 
 .progress-bar{
-    margin:20px 0;
     webkit-appearance: progress-bar;
     color:#007bff!important;
     background-color:white!important;
     height: 20px;
-    width: 100%;
+    width: 100px;
     border-radius: 2px;
+    position: relative;
+    top:7px;
+    margin-right: 10px;
 }
 
 
 .question-text{
     background-color: rgba(0,0,0,0.7);
+}
+
+.navbar-static-top{
+    position:fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.question-text{
+    padding: 5px 10px ; 
+}
+
+.explanation-wrapper{
+    background-color: rgba(0,0,0,0.7);
+    padding: 20px 10px 15px 10px; 
+}
+
+.align-left{
+    text-align:left;
+}
+
+.align-right{
+    text-align:right;
 }
