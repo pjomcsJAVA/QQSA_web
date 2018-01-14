@@ -6,6 +6,9 @@ public class Item implements Comparable<Item>{
     private String value;
     private boolean correct;
     private int count;
+    private int totalCount;
+    private boolean show;
+
 
 
     public Item(int index, String value, boolean correct) {
@@ -42,9 +45,34 @@ public class Item implements Comparable<Item>{
     public int getCount() {
         return count;
     }
+    
+    public String getCountStr() {
+        if(!show){
+            return "";
+        }
+        double perc = 1.0*count*100/totalCount;
+        perc = round(perc, 1);
+        return String.valueOf(perc);
+    }
 
     public void setCount(int count) {
         this.count = count;
+    }
+    
+    public boolean isShow() {
+    return show;
+    }
+
+    public void setShow(boolean show) {
+        this.show = show;
+    }
+    
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
     
     public void incrementCount(){
@@ -62,5 +90,10 @@ public class Item implements Comparable<Item>{
         sb.append(" corect: "+correct);
         sb.append("\n");
         return sb.toString();
-    } 
+    }
+    
+    private double round (double value, int precision) {
+        int scale = (int) Math.pow(10, precision);
+        return (double) Math.round(value * scale) / scale;
+    }
 }

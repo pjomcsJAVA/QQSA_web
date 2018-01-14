@@ -13,9 +13,14 @@
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-        <script src="/webserver/app.js"></script>
-      
-        <!-- Bootstrap core CSS -->
+         <!--<script src="/webserver/app.js"></script>-->
+         <script>
+            setInterval(function() {
+                document.getElementById("hiddenForm:updateTimer").click();
+            }, 1000);
+        </script>
+          <!--Bootstrap core CSS -->
+         
         <link href="/webserver/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
 
         <!-- Custom fonts for this template -->
@@ -35,24 +40,32 @@
               <a class="navbar-brand" href="#"><img src="/webserver/img/programming.png" class="programming-icon"></img> Extreme Programming</a>  
                             
               <span class="step-clock-#{quiz.step}" >
-                <img src="https://i.pinimg.com/originals/de/50/2a/de502ade8fc8fa2e69a5cceb39198bdf.jpg" class="timer-animation"></img>
-                <!-- <i class="fa fa-clock-o"></i> -->
-                <span id="timeLeft">10s</span>
+                 <!--  <img src="https://i.pinimg.com/originals/de/50/2a/de502ade8fc8fa2e69a5cceb39198bdf.jpg" class="timer-animation"></img>
+              <i class="fa fa-clock-o"></i> -->
+                 <span id="timeLeft">
+                     <h:outputText id="timer" value="#{quiz.step == 0 ? '' : (quiz.timer == 0 ? 'Expirado' : quiz.timer)}" />
+                 </span>
               </span>
+              
+              <h:form id="hiddenForm" style="display:none">
+                    <h:commandButton id="updateTimer">
+                        <f:ajax render=":timer :nextStepButton :pontuacaoButton"/>
+                    </h:commandButton>
+              </h:form>
               
               <h:form><progress max="#{ quiz.questionsCount }" value="#{ quiz.step }" class="progress-bar" style="display:inline;"></progress>
                     <h5 class="step-number"><h:outputText id = "outputMessage" value = "Passo: #{quiz.step} / #{ quiz.questionsCount }"/>   
                         </h5>
 
-                    <h:commandButton value="#{quiz.step == 0 ? 'Iniciar' : 'Pr&oacute;ximo passo'}" 
-                                     action="#{quiz.nextStep}" class="#{quiz.step == 0 ? '' : 'disable-next-button'} btn btn-primary cursor-pointer" 
+                    <h:commandButton id="nextStepButton" value="#{quiz.step == 0 ? 'Iniciar' : 'Pr&oacute;ximo passo'}" 
+                                     action="#{quiz.nextStep}" class="#{quiz.timer == 0 or quiz.step == 0 ? '' : 'disable-next-button'} btn btn-primary cursor-pointer" 
                                      rendered="#{quiz.step != quiz.questionsCount}">
-                        <f:ajax execute = "inputName" render = "outputMessage" />
+                        <f:ajax render = "outputMessage" />
                     </h:commandButton>
-                    <h:commandButton value="Ver Pontua&ccedil;&atilde;o Total" 
-                                     action="top10.xhtml?faces-redirect=true" class="disable-next-button btn btn-primary cursor-pointer" 
+                    <h:commandButton id="pontuacaoButton" value="Ver Pontua&ccedil;&atilde;o Total" 
+                                     action="top10.xhtml?faces-redirect=true" class="#{quiz.timer == 0 ? '' : 'disable-next-button'} btn btn-primary cursor-pointer" 
                                      rendered="#{quiz.step == quiz.questionsCount}">
-                        <f:ajax execute = "inputName" render = "outputMessage" />
+                        <f:ajax render = "outputMessage" />
                     </h:commandButton>
               </h:form> 
               
@@ -67,7 +80,7 @@
                  <h1 class="mb-5 question-text align-left">
                       #{quiz.step != 0 ? quiz.question.question : 'Vamos iniciar o question&aacute;rio sobre Extremme Programming. Est&aacute;s pronto?'}
                  </h1>
-                    <h:form> 
+                <h:form> 
                 <div id="questionOptions" class="#{ (quiz.step >= 1 and quiz.questionsCount >= quiz.step)  ? '' : 'display-none'}">
                     <h:dataTable id="questionTable" value="#{quiz.question.answers}" var="q"
                                            styleClass="table order-table table-bordered table-condensed questions-show"
@@ -90,21 +103,31 @@
                         </span>
                     </h:column>
                     <h:column>
-                        <f:facet name="header">Statistics</f:facet>
-                        #{ q.count }
+                        <f:facet name="header">
+                            <h:commandButton value="Ver Resultados (%)" 
+                                             class="#{quiz.timer == 0 or quiz.step == 0 ? '' : 'disable-next-button'} btn btn-primary bnt-sm margin-top-10"
+                                             action="#{quiz.showQuestionResults(quiz.step)}">
+                            </h:commandButton>
+                        </f:facet>
+                        #{ q.countStr}
                     </h:column>    
                 </h:dataTable>
-
-                    <div class="explanation explanation-wrapper align-left">
-                    <h5><i class="fa fa-info-circle" aria-hidden="true"></i> #{quiz.question.explanation}</h5>     
+                </div>
+                </h:form>
+                
+                <h:form id="explanation-form"> 
+                    <div class="#{quiz.timer == 0 ? '' : 'explanation-hide'} explanation-wrapper align-left">
+                        <h5>
+                           #{quiz.question.explanation} 
+                        </h5>     
                     </div>
-                                       
-                    <h:commandButton value="Actualizar" class='btn btn-primary bnt-sm margin-top-10'>
-                          <f:ajax render="questionTable" />
-                    </h:commandButton>
-
-                   </div>
-                </h:form> 
+                </h:form>     
+                  <!--                     
+                    
+-->
+              
+                  
+               
                 
             </div>
              <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
@@ -114,33 +137,5 @@
          </div>
         </header>      
        
-       <!--
-       <div class="container container-fluid #{ (quiz.step == (quiz.questionsCount-1))  ? '' : 'display-none'}">  
-           <div class="card margin-top-40">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 col-lg-4 step-#{quiz.step}"> 
-                            <h5 class="text-bold">&#x1f3c6; Top 5</h5>
-                            <h:dataTable value="#{quiz.scoreTable}" var="o"
-                                         styleClass="table order-table table-bordered table-condensed"
-                                         headerClass="order-table-header"
-                                         rowClasses="order-table-odd-row,order-table-even-row"
-                            >
-                               <h:column>
-                                  <f:facet name="header">Player</f:facet>
-                                  #{o.name}
-                               </h:column>
-
-                               <h:column>
-                                  <f:facet name="header">Score</f:facet>
-                                  #{o.score}
-                               </h:column>
-                            </h:dataTable>
-                        </div>
-                    </div>    
-                </div>
-           </div>
-       </div>
-       -->
    </body>
 </html>

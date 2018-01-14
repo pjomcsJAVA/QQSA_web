@@ -23,6 +23,8 @@ public class Question {
     private int correct;
 
     private List<Item> answers = new ArrayList<>(); 
+    
+    private boolean showResults;
 
     public Question(String question, String explanation, List<Item> answers) {
         this.question = question;
@@ -80,6 +82,31 @@ public class Question {
 
     public void setCorrect(int correct) {
         this.correct = correct;
+    }
+    
+    public boolean isShowResults() {
+        return showResults;
+    }
+
+    public int getTotalCountAnswers(){
+        int count = 0;
+        for (Item answer : answers) {
+            count +=answer.getCount();
+        }
+        return count;
+    }
+    
+    public void setShowResults(boolean showResults) {
+        this.showResults = showResults;
+        int count = 0;
+        for (Item answer : answers) {
+            count +=answer.getCount();
+        }
+        
+        for (Item answer : answers) {
+            answer.setShow(showResults);
+            answer.setTotalCount(count);
+        }
     }
     
     public void incrementItemByIndex(int index){

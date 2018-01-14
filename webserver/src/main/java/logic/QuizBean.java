@@ -4,16 +4,16 @@ import net.thegreshams.firebase4j.model.FirebaseResponse;
 import net.thegreshams.firebase4j.service.Firebase;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.bean.SessionScoped;
 
 @ManagedBean(name= "quiz")
-@ApplicationScoped
+@SessionScoped
 public class QuizBean {
 
     private static final String SPLIT_REGEX = "[-]";
@@ -27,7 +27,8 @@ public class QuizBean {
     private Firebase firebase;
     private int step = 0;
     private long lastTime = 0;
-    
+    private int timer = 10;
+
     private final Map<Integer, Question> questionsMap = new HashMap<>();
     
 
@@ -59,6 +60,22 @@ public class QuizBean {
         if(currentTime - lastTime > STEP_TIME_SECS * 1000){
             if(step < getQuestionsCount()){
                 step++;
+                timer = 10;
+                Thread tTimer = new Thread(new Runnable() {
+                    @Override
+                    public void run(){
+                        while(timer > 0){
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(QuizBean.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            timer--;
+                        }
+                        System.out.println("Timmer done in time of (ms): " + (System.currentTimeMillis()- currentTime));
+                    }
+                });
+                tTimer.start();
                 
                 Thread tStep = new Thread(new Runnable() {
                     @Override
@@ -229,7 +246,13 @@ public class QuizBean {
         return questionsMap.size();
     }
     
+    public int getTimer() {
+        return timer;
+    }
     
+    public void showQuestionResults(int step){
+        questionsMap.get(step).setShowResults(true);
+    }
 
 }
 
