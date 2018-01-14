@@ -43,7 +43,7 @@
                  <!--  <img src="https://i.pinimg.com/originals/de/50/2a/de502ade8fc8fa2e69a5cceb39198bdf.jpg" class="timer-animation"></img>
               <i class="fa fa-clock-o"></i> -->
                  <span id="timeLeft">
-                     <h:outputText id="timer" value="#{quiz.step == 0 ? '' : (quiz.timer == 0 ? 'Expirado' : quiz.timer)}" />
+                     <h:outputText id="timer" value="#{quiz.step == 0 ? '' : (quiz.timer == 0 ? 'Expirado' : quiz.timer)}#{quiz.step == 0 or quiz.timer == 0 ? '' : (quiz.timer == 1 ? ' seg' : ' segs')}" />
                  </span>
               </span>
               
