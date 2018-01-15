@@ -140,7 +140,14 @@
 }
 
 
-header.masthead {
-    padding-top: 10px;
-    padding-bottom: 10px;
+.new-padding {
+    padding-top: 10px!important;
+    padding-bottom:10px!important;
+}
+
+.text-intro{
+    background-color: rgba(0,0,0,0.7);
+    padding: 5px 10px ; 
+    font-size:23px;
+    text-align: left;
 }

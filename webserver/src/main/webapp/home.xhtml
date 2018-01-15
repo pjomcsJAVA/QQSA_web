@@ -72,14 +72,19 @@
           </div>
         </nav>
         <!-- Masthead -->
-        <header class="masthead text-white text-center" style="height:1200px;">
+        <header class="masthead text-white text-center #{ (quiz.step >= 1)  ? 'new-padding' : ''}" style="height:1200px;">
          <div class="overlay"></div>
          <div class="container">
            <div class="row">
                <div class="col-xl-9 mx-auto" style="">
                  <h4 class="mb-5 question-text align-left">
                       #{quiz.step != 0 ? quiz.question.question : 'Vamos iniciar o question&aacute;rio sobre Extremme Programming. Est&aacute;s pronto?'}
-                 </h4>
+                 </h4>   
+                <div class="#{ (quiz.step == 0)  ? '' : 'display-none'} text-intro">
+                    <h5>1 - Ir &agrave; playstore e procurar "<b>qqsa_mds_app</b>"</h5>
+                    <h5>2 - Instalar</h5>
+                </div>
+                   
                 <h:form> 
                 <div id="questionOptions" class="#{ (quiz.step >= 1 and quiz.questionsCount >= quiz.step)  ? '' : 'display-none'}">
                     <h:dataTable id="questionTable" value="#{quiz.question.answers}" var="q"
@@ -119,13 +124,15 @@
                 </div>
                 </h:form>
                 
+                <div class="#{ (quiz.step == 0)  ? 'display-none' : ''}">
                 <h:form id="explanation-form"> 
                     <div class="#{quiz.timer == 0 ? '' : 'explanation-hide'} explanation-wrapper align-left">
                         <h5>
                            #{quiz.question.explanation} 
                         </h5>     
                     </div>
-                </h:form>     
+                </h:form>  
+               </div>
                   <!--                     
                     
 -->
