@@ -151,3 +151,7 @@
     font-size:23px;
     text-align: left;
 }
+
+.mb-5, .my-5 {
+    margin-bottom: 10px!important;
+}
