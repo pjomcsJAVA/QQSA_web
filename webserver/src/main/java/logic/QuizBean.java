@@ -26,7 +26,7 @@ public class QuizBean {
     private static final String KEY_QUESTIONS= "questions";
     private static final String ANSWER_PREFIX = "answer-";
     private static final String PROPERTY_URL = "url";
-    private static final int STEP_TIME_SECS = 18; // each step takes 10 secs to complete
+    private static final int STEP_TIME_SECS = 26; // each step takes 10 secs to complete
     private static final int TOP_COUNT_LIMIT = 5;// the score table only shows the best 5 playeres 
     
     /**
