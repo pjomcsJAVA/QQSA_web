@@ -72,14 +72,14 @@
           </div>
         </nav>
         <!-- Masthead -->
-        <header class="masthead text-white text-center">
+        <header class="masthead text-white text-center" style="height:1200px;">
          <div class="overlay"></div>
          <div class="container">
            <div class="row">
-             <div class="col-xl-9 mx-auto">
-                 <h1 class="mb-5 question-text align-left">
+               <div class="col-xl-9 mx-auto" style="">
+                 <h4 class="mb-5 question-text align-left">
                       #{quiz.step != 0 ? quiz.question.question : 'Vamos iniciar o question&aacute;rio sobre Extremme Programming. Est&aacute;s pronto?'}
-                 </h1>
+                 </h4>
                 <h:form> 
                 <div id="questionOptions" class="#{ (quiz.step >= 1 and quiz.questionsCount >= quiz.step)  ? '' : 'display-none'}">
                     <h:dataTable id="questionTable" value="#{quiz.question.answers}" var="q"
@@ -87,9 +87,11 @@
                                            headerClass="thead-light order-table-header"
                                            rowClasses="order-table-odd-row,order-table-even-row"
                               >
-                    <h:column>                                  
+                    <h:column>   
+                        <!--
                         <f:facet name="header">#</f:facet>
-                        <span class="">#{q.index != 0 ? (q.index) : ''}</span>             
+                        -->
+                        <span class="option-show option-show-#{q.index}">#{q.index != 0 ? (q.index) : ''}</span>             
                     </h:column>
 
                     <h:column>
@@ -97,7 +99,9 @@
                         #{ q.value }
                     </h:column>
                     <h:column>
+                        <!--
                         <f:facet name="header"></f:facet>
+                        -->
                         <span class="#{quiz.timer == 0 ? '' : 'correct-answer'} text-success text-bold">
                             #{q.correct == true ? '&#10004;' : ''}
                         </span>
