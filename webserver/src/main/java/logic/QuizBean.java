@@ -11,10 +11,10 @@ import java.net.URL;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ApplicationScoped;
 
 @ManagedBean(name= "quiz")
-@SessionScoped
+@ApplicationScoped
 public class QuizBean {
 
     /**
@@ -210,7 +210,7 @@ public class QuizBean {
         
         for (Map.Entry<String, Object> entry : fbQuestionsMap.entrySet()) {
             
-            int key = Integer.parseInt(entry.getKey().substring(entry.getKey().length()-1));
+            int key = Integer.parseInt(entry.getKey().split(SPLIT_REGEX)[1]);
             Map<String, Object> questionMap = (Map<String, Object>) entry.getValue();
 
             Question question = new Question(questionMap);
@@ -261,7 +261,7 @@ public class QuizBean {
      * @return a .
      */
     public Question getQuestion(){
-        System.out.println("Entering getQuestion");
+        System.out.println("Entering getQuestion size: "+questionsMap.size()+" step: "+step);
         return questionsMap.get(step);
     }
 
@@ -288,6 +288,7 @@ public class QuizBean {
     }
     
     public void showQuestionResults(int step){
+        System.out.println("Entering showQuestionResults");
         questionsMap.get(step).setShowResults(true);
     }
 
