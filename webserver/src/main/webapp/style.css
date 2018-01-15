@@ -17,7 +17,7 @@
 
 .questions-show{
     text-align: left;
-    font-size:24px;
+    font-size:20px;
     background-color: rgba(255,255,255,0.9);
     color:black;
 }
@@ -90,18 +90,12 @@
 
 .question-text{
     background-color: rgba(0,0,0,0.7);
-}
-
-.navbar-static-top{
-    position:fixed;
-    width: 100%;
-    top: 0;
-    z-index: 100;
-}
-
-.question-text{
     padding: 5px 10px ; 
+    font-size:32px;
 }
+
+
+
 
 .explanation-wrapper{
     background-color: rgba(0,0,0,0.7);
@@ -120,4 +114,32 @@
     height: 100%;
     width: 100%;
     display: block;
+}
+
+.option-show-1{
+    background-color: #d9534f;
+}
+
+.option-show-2{
+    background-color: #02D302;
+}
+
+.option-show-3{
+    background-color: #0275d8;
+}
+
+.option-show-4{
+    background-color: #f0ad4e;
+}
+
+.option-show{
+    height:20px;
+    width:20px;
+    padding:8px 20px;   
+}
+
+
+header.masthead {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
