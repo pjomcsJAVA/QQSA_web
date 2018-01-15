@@ -155,3 +155,12 @@
 .mb-5, .my-5 {
     margin-bottom: 10px!important;
 }
+
+.this-is-correct-answer{
+    font-weight: bold;
+}
+
+.this-is-correct-answer-green{
+    font-weight: 900;
+    color:#02D302;
+}

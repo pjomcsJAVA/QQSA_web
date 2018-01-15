@@ -96,12 +96,14 @@
                         <!--
                         <f:facet name="header">#</f:facet>
                         -->
-                        <span class="option-show option-show-#{q.index}">#{q.index != 0 ? (q.index) : ''}</span>             
+                        <span class="option-show option-show-#{q.index} #{quiz.timer == 0 and q.correct == true ? 'this-is-correct-answer' : ''}">
+                            #{q.index != 0 ? (q.index) : ''}
+                        </span>             
                     </h:column>
 
                     <h:column>
                         <f:facet name="header">Op&ccedil;&otilde;es</f:facet>
-                        #{ q.value }
+                        <span class="#{quiz.timer == 0 and q.correct == true ? 'this-is-correct-answer-green' : ''}">#{ q.value }</span>
                     </h:column>
                     <h:column>
                         <!--
