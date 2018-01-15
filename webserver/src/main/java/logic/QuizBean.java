@@ -1,5 +1,6 @@
 package logic;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import net.thegreshams.firebase4j.model.FirebaseResponse;
 import net.thegreshams.firebase4j.service.Firebase;
 
@@ -16,31 +17,39 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class QuizBean {
 
+    /**
+     * Constants
+     */
     private static final String SPLIT_REGEX = "[-]";
     private static final String FIRE_BASE_FILE = "firebase";
     private static final String KEY_USERS = "users";
     private static final String KEY_QUESTIONS= "questions";
-    private static final long STEP_TIME_SECS = 10;
+    private static final String ANSWER_PREFIX = "answer-";
     private static final String PROPERTY_URL = "url";
-   
+    private static final int STEP_TIME_SECS = 18; // each step takes 10 secs to complete
+    private static final int TOP_COUNT_LIMIT = 5;// the score table only shows the best 5 playeres 
+    
+    /**
+     * Variables
+     */
+    private final Map<Integer, Question> questionsMap = new HashMap<>();
     private List<Player> players;
     private Firebase firebase;
-    private int step = 0;
+    private int step = 0; // current step of the quiz
     private long lastTime = 0;
-    private int timer = 10;
-
-    private final Map<Integer, Question> questionsMap = new HashMap<>();
+    private int timer;
+   
     
-
     @PostConstruct
     public void init() {
         System.out.println("Entering init quiz");
         players = new ArrayList<>();
         try {
             String url = getFireBaseUrl(FIRE_BASE_FILE);
-            System.out.println("init url : "+url);
             firebase = new Firebase(url);
+            prepareFireBase();
             loadQuestions();
+            setStep(0, System.currentTimeMillis());//prepare quiz in mobile app
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -53,17 +62,14 @@ public class QuizBean {
      */
     public void nextStep(){
         System.out.println("Entering nextStep with step "+step);
-        final String map = "procedure";
-        final String keyStep = "step";
-        final String keyTimeStamp = "timestamp";
-        final long currentTime = System.currentTimeMillis();
+       
         
-        System.out.println("CurrentTimeStamp "+currentTime);
+        final long currentTime = System.currentTimeMillis();
         
         if(currentTime - lastTime > STEP_TIME_SECS * 1000){
             if(step < getQuestionsCount()){
                 step++;
-                timer = 10;
+                timer = STEP_TIME_SECS;
                 Thread tTimer = new Thread(new Runnable() {
                     @Override
                     public void run(){
@@ -83,16 +89,7 @@ public class QuizBean {
                 Thread tStep = new Thread(new Runnable() {
                     @Override
                     public void run(){
-                        Map<String, Object> stepMap = new HashMap<>();
-                        stepMap.put(keyStep, step);
-                        stepMap.put(keyTimeStamp, currentTime);
-                        FirebaseResponse response = null;
-                        try {
-                            response = firebase.put(map, stepMap );
-                        } catch (Throwable e) {
-                            e.printStackTrace();
-                        }
-                        System.out.println( "Result of POST:\n" + response );
+                        setStep(step, currentTime);
                     }
                 });
                 
@@ -100,7 +97,7 @@ public class QuizBean {
                     @Override
                     public void run(){
                         try {
-                            Thread.sleep(10000);// waits for mobile app set the responses in firebase
+                            Thread.sleep(STEP_TIME_SECS*1000);// waits for mobile app set the answers in firebase
                         } catch (InterruptedException ex) {
                             Logger.getLogger(QuizBean.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -120,6 +117,23 @@ public class QuizBean {
             System.out.println( "Not enough time yet");
         }
     }
+    
+    private void setStep(int step, long currentTime) {
+        final String map = "procedure";
+        final String keyStep = "step";
+        final String keyTimeStamp = "timestamp";
+        
+        Map<String, Object> stepMap = new HashMap<>();
+        stepMap.put(keyStep, step);
+        stepMap.put(keyTimeStamp, currentTime);
+        FirebaseResponse response = null;
+        try {
+            response = firebase.put(map, stepMap );
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        System.out.println( "Result of POST:\n" + response );
+    }
 
     /**
      * Loads the score table form firebase.
@@ -136,7 +150,6 @@ public class QuizBean {
             Player p = new Player(entryPlayer.getKey().toString());
 
             for (Map.Entry entryAnswer : user.entrySet()) {
-                System.out.println(entryAnswer.getKey()+" : "+entryAnswer.getValue());
                 String ansKey = entryAnswer.getKey().toString().split(SPLIT_REGEX)[1];
 
                 int key = Integer.parseInt(ansKey);
@@ -163,12 +176,26 @@ public class QuizBean {
             
             int option =0;
             try{
-                option= (Integer) user.get("answer-"+step);
+                option= (Integer) user.get(ANSWER_PREFIX+step);
             }catch (NullPointerException e){
                 System.out.println("User retrived do not have answer-"+step+" defined! "+e.getMessage());
             }
             question.incrementItemByIndex(option);
         }
+    }
+
+    
+    private void prepareFireBase() {
+        System.out.println("Entering prepareFireBase");
+
+        Map<String, Object> playersMap = new HashMap<>();
+        FirebaseResponse response = null;
+        try {
+            response = firebase.delete(KEY_USERS);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        System.out.println( "Result of POST:\n" + response );
     }
 
     
@@ -182,11 +209,11 @@ public class QuizBean {
         Map<String, Object> fbQuestionsMap =  getFirebaseMap(KEY_QUESTIONS);
         
         for (Map.Entry<String, Object> entry : fbQuestionsMap.entrySet()) {
+            
             int key = Integer.parseInt(entry.getKey().substring(entry.getKey().length()-1));
             Map<String, Object> questionMap = (Map<String, Object>) entry.getValue();
 
             Question question = new Question(questionMap);
-            System.out.println(question);
             questionsMap.put(key, question);
         }
     }
@@ -219,7 +246,13 @@ public class QuizBean {
      */
     public List<Player> getScoreTable(){
         System.out.println("Entering getScoreTable");
-        return players;
+        List<Player> playersTop5 = new ArrayList<>();
+        int limit = players.size() < 5 ? players.size() : TOP_COUNT_LIMIT;
+        for (int i = 0; i < limit; i++) {
+            playersTop5.add(players.get(i));
+        }
+        Collections.sort(playersTop5);
+        return playersTop5;
     }
 
     /**
@@ -258,5 +291,6 @@ public class QuizBean {
         questionsMap.get(step).setShowResults(true);
     }
 
+    
 }
 

@@ -1,40 +1,94 @@
 {
   "procedure" : {
-    "step" : 2
+    "step" : 2,
+    "timestamp" : 1515968577000
   },
   "questions" : {
     "question-1" : {
       "correct" : 2,
       "explanation" : "E a explicação... 1",
-      "text-0" : "this is a question 1",
-      "text-1" : "this is another answer 1",
-      "text-2" : "this is another another anwser 1",
-      "text-3" : "this is correct 1"
+      "text-0" : "Qual das seguintes sequências é a correta para",
+      "text-1" : "Testes - Código - Refactoring",
+      "text-2" : "Código - Refactoring - Testes",
+      "text-3" : "Códico - Testes - Refactoring",
+      "text-4" : "Nenhuma das anteriores"
     },
     "question-2" : {
       "correct" : 1,
       "explanation" : "E a explicação2.....",
-      "text-0" : "question number 2?",
-      "text-1" : "this is answer 2",
-      "text-2" : "this is another answer2",
-      "text-3" : "this is another correct answer 2"
+      "text-0" : "Qual das seguintes opções é a prática que dita que o código é sempre escrito por 2 programadores na mesma máquina?",
+      "text-1" : "Pair Programming",
+      "text-2" : "Peer Programming",
+      "text-3" : "Dual Programming",
+      "text-4" : "Co-op Programming"
+    },
+    "question-3" : {
+      "correct" : 1,
+      "explanation" : "O Extreme Programming é reconhecido por adoptar os seguintes valores: Comunicação; Simplicidade; Feeback; Coragem e Respeito.",
+      "text-0" : "Comunicação, simplicidade e respeito são algumas das ______ definidas em Extreme Programming.",
+      "text-1" : "Valores",
+      "text-2" : "Práticas",
+      "text-3" : "Princípios",
+      "text-4" : "Regras"
+    },
+    "question-4" : {
+      "correct" : 4,
+      "explanation" : "Inicialmente o cliente escreve as user stories enquanto a equipa de desenvolvimento estima o seu custo. Depois, o cliente seleciona as user stories para as próximas iterações com base no risco e valor de negócio.",
+      "text-0" : "Qual é o papel do cliente durante o Planning Game?",
+      "text-1" : "Escrever user stories e definir ordem de implementação",
+      "text-2" : "Escrever e estimar user stories",
+      "text-3" : "Escrever user stories e requisitos",
+      "text-4" : "Mostrar os requisitos de software"
+    },
+    "question-5" : {
+      "correct" : 3,
+      "explanation" : "No âmbito da temática XP (Extreme Programming), indique qual é a afirmação incorrecta:",
+      "text-0" : "No âmbito da temática XP (Extreme Programming), indique qual é afirmação incorrecta:",
+      "text-1" : "Projetos cujos requisitos são vagos e mudam de frequência",
+      "text-2" : "Desenvolvimento de sistemas orientados a objecto",
+      "text-3" : "Equipas grandes e projectos complexos",
+      "text-4" : "Desenvolvimento incremental"
     }
   },
   "users" : {
     "ana" : {
       "answer-1" : 2,
-      "answer-2" : 1,
-      "answer-3" : 4
+      "answer-2" : 3,
+      "answer-3" : 4,
+      "answer-4" : 1,
+      "answer-5" : 4
     },
     "carlos" : {
       "answer-1" : 1,
       "answer-2" : 1,
       "answer-3" : 3
     },
+    "jose" : {
+      "answer-1" : 1,
+      "answer-2" : 1,
+      "answer-3" : 3,
+      "answer-4" : 1,
+      "answer-5" : 4
+    },
+    "mario" : {
+      "answer-1" : 1,
+      "answer-2" : 3,
+      "answer-3" : 1,
+      "answer-4" : 4,
+      "answer-5" : 3
+    },
+    "afonso" : {
+      "answer-1" : 2,
+      "answer-2" : 1,
+      "answer-3" : 1,
+      "answer-4" : 4,
+      "answer-5" : 3
+    },
     "rui" : {
       "answer-1" : 3,
       "answer-2" : 2,
-      "answer-3" : 4
+      "answer-3" : 4,
+      "answer-4" : 1
     }
   }
 }
