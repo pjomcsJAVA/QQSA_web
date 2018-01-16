@@ -9,6 +9,9 @@ import javax.faces.bean.SessionScoped;
 public class HelloWorld {
 
    private int counter = 0;
+   private String name;
+
+   
    
    public HelloWorld() {
 
@@ -17,4 +20,12 @@ public class HelloWorld {
    public String getMessage() {
         return "Hello World "+counter+++"!";
    }
+   
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
