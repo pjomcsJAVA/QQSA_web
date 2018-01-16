@@ -164,3 +164,11 @@
     font-weight: 900;
     color:#02D302;
 }
+
+.progress-bar-default{
+    width:100px;
+    margin-left: 10px;
+    display: inline;
+    top:0px;
+    position:relative;
+}

@@ -120,7 +120,8 @@
                                              action="#{quiz.showQuestionResults(quiz.step)}">
                             </h:commandButton>
                         </f:facet>
-                        #{ q.countStr}
+                        #{ q.countStr }
+                        <progress value="#{ q.countStr }" max="100" class="progress-bar progress-bar-default pull-right" style="#{q.countStr == '' ? 'display:none;' : ''}"></progress>
                     </h:column>    
                 </h:dataTable>
                 </div>
